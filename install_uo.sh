@@ -166,7 +166,6 @@ function UOS_install
 
 function WINE_fix
 {
-	clear
 	execution_success="false"
 	echo -e "\n Modifying the winecfg to disable the window manager for controlling UO."
 	echo "If this option is not performed. Your game will crash everytime when selecting"
@@ -180,7 +179,6 @@ function WINE_fix
 
 function LINK_create
 {
-	clear
 	echo -e "\n Do you wish to add the wine alias into your shell file?"
 	echo "*(This will make typing \"wine\" a shortcut for: WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine"
 	echo -n "  Option [y/N]: "
