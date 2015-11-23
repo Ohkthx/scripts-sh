@@ -21,11 +21,11 @@
 clear
 
 UOC_CLIENT_EXE="UOClassicSetup.exe"	# Assigns the name of the client
-UOS_CLIENT_RAR="UOS_Latest.rar"		# Name of the .rar file for UO Steam
+#UOS_CLIENT_RAR="UOS_Latest.rar"		# Name of the .rar file for UO Steam
 UOS_CLIENT_EXE="UOS_Latest.exe"		# Name of the UO Steam application (what is extracted from .rar)
 
 UOC_CLIENT_URL="http://web.cdn.eamythic.com/us/uo/installers/20120309/UOClassicSetup_7_0_24_0.exe"	# URL to download from
-UOS_CLIENT_URL="http://www.uoforever.com/files/UOS_Latest.rar"						# URL to download from
+UOS_CLIENT_URL="http://uos-update.github.io/UOS_Latest.exe"						# URL to download from
 INSTALL_DIR="${PWD}/ultima_install"
 
 INS="[\x1B[1;36m**\x1B[0m]"	# Fancy prefix for a string display of a install: [**]
@@ -60,7 +60,7 @@ function main
 
 function check_progs
 {
-	req_progs="wine wget rar"	# Programs that will be iterated through to verify they exist on the system.
+	req_progs="wine wget"	# Programs that will be iterated through to verify they exist on the system.
 
 	for program in ${req_progs}; do
 		if [[ ! -f /usr/bin/${program} || ! -f /bin/${program} ]]; then	# Checks to verify you have the ability to download the executables (wget)
@@ -137,25 +137,15 @@ function UOC_install
 function UOS_install
 {
 	execution_success="false"
-	if [[ ! -f ${UOS_CLIENT_RAR} || ! -f ${UOS_CLIENT_EXE} ]]; then
-		if [[ ! -f ${UOS_CLIENT_RAR} ]]; then
-			echo -e "\n  ${BAD} File: ${UOS_CLIENT_RAR} not found... Downloading."
-			wget -O ${UOS_CLIENT_RAR} ${UOS_CLIENT_URL} > /dev/null 2>&1		# Downloads the UO Steam client.
-			echo -e " ${SUC} Download complete of: ${UOS_CLIENT_RAR}"
+	if [[ ! -f ${UOS_CLIENT_EXE} ]]; then
+		if [[ ! -f ${UOS_CLIENT_EXE} ]]; then
+			echo -e "\n  ${BAD} File: ${UOS_CLIENT_EXE} not found... Downloading."
+			wget ${UOS_CLIENT_URL} > /dev/null 2>&1		# Downloads the UO Steam client.
+			echo -e " ${SUC} Download complete of: ${UOS_CLIENT_EXE}"
 			sleep 1
-		fi
-
-		if [[ -f ${UOS_CLIENT_RAR} && ! -f ${UOS_CLIENT_EXE} ]]; then 
-			echo -e " ${BAD} Unpacking ${UOS_CLIENT_RAR}."
-			rar x ${UOS_CLIENT_RAR} > /dev/null 2>&1				# Extracts the UOS_Latest.exe
-			sleep 1
-			if [[ -f ${UOS_CLIENT_EXE} ]]; then
-				echo -e " ${SUC} Unpackaging of ${UOS_CLIENT_RAR} => ${UOS_CLIENT_EXE} complete."
-				execution_success="true"	# Flag for installation.
-			fi
+			execution_success="true"	# Flag for installation.
 		fi
 	else
-		# # # #  INSTALL
 		if [[ ! -d "${HOME}/.wine32/drive_c/Program Files/UOS" ]]; then
 			echo -e "\n ${INS} Installing ${UOS_CLIENT_EXE}."
 			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine ${UOS_CLIENT_EXE} > /dev/null 2>&1	# Launches UOS installation process.
@@ -172,7 +162,7 @@ function WINE_fix
 	echo "a character and entering the game."
 	echo -e "\n Options to DESELECT on the \"Graphics\" tab: "
 	echo -e "\tAllow the window manager to decorate the windows."
-	echo -e "\tAllow the window manager to control the windows."
+#	echo -e "\tAllow the window manager to control the windows."
 	WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 winecfg > /dev/null 2>&1	# Launches the winecfg to disable window management.
 }
 
