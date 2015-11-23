@@ -223,7 +223,7 @@ function check_shortcut
 	if [[ ! -f ${UO_PATH} ]]; then	
 		echo "#!/bin/bash" > ${UO_PATH}							# #!/bin/bash
 		echo "cd \"${HOME}/.wine32/drive_c/Program Files/UOS\"" >> ${UO_PATH} 		# cd "${HOME}/.wine32/drive_c/Program Files/UOS"
-		echo "WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UOS.exe" >> ${UO_PATH}	# WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UOS.exe
+		echo "WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UOS.exe > /dev/null 2>&1" >> ${UO_PATH}	# WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UOS.exe
 		echo -e "\n${UO_PATH} has been created!"
 		chmod +x ${UO_PATH}								# Marks the new file executable.
 		echo "EXECUTE AND LAUNCH UO BY: \"./ultima.sh\" in your home directory."
