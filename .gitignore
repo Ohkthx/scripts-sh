@@ -1,2 +1,6 @@
 # Files
 *.swp
+*.bak
+
+# Directories
+ultima_install/
