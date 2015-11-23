@@ -20,7 +20,7 @@
 
 clear
 
-UOC_CLIENT_EXE="UOClassSetup.exe"
+UOC_CLIENT_EXE="UOClassicSetup.exe"
 UOS_CLIENT_RAR="UOS_Latest.rar"
 UOS_CLIENT_EXE="UOS_Latest.exe"
 
@@ -29,9 +29,15 @@ UOS_CLIENT_URL="http://www.uoforever.com/files/UOS_Latest.rar"
 INSTALL_DIR="${PWD}/ultima_install"
 full_install="false"
 
+INS="[\x1B[1;36m**\x1B[0m]"
+SUC="[\x1B[36m+\x1B[0m]"
+BAD="[\x1B[31m-\x1B[0m]"
+
 
 function main
 {
+	check_progs
+
 	create_install_dir
 	if [[ ${execution_success} == "true" ]]; then
 		create_install_dir
@@ -52,29 +58,41 @@ function main
 	LINK_create
 }
 
+
+function check_progs
+{
+	req_progs="wine wget rar"
+
+	for program in ${req_progs}; do
+		if [[ ! -f /usr/bin/${program} || ! -f /bin/${program} ]]; then	# Checks to verify you have the ability to download the executables (wget)
+			echo " You need to the ${program} package to install this..."
+			echo "  Exiting..."
+			exit		# This executable is required... can not proceeded with downloading without it
+		else
+			echo -e " ${SUC} ${program} found."
+		fi			#   unless it is done manually....
+	done
+}
+
+
 function create_install_dir
 {
 	execution_success="false"
 	if [[ ! -d ultima_install/ ]]; then
-		echo "  [-] Directory: ultima_install/ does not exist... Creating."
+		echo -e " ${BAD} Directory: ultima_install/ does not exist... Creating."
 		mkdir ultima_install			# Creates the directory.
-		echo " [+] Directory created."
+		echo -e " ${SUC} Directory created."
 		full_install="true"			# Sets the flag "full_install" because install files do not exist.
 
-		if [[ ! -f /usr/bin/wget ]]; then	# Checks to verify you have the ability to download the executables (wget)
-			echo " You need to the wget package to install this..."
-			echo "  Exiting..."
-			exit		# This executable is required... can not proceeded with downloading without it
-		fi			#   unless it is done manually....
 
-		echo "  [-] Verifying directory creation was successful..."
+		echo -e " ${BAD} Verifying directory creation was successful..."
 		sleep 1
 		execution_success="true"
 
 	else
-		echo -e "\n [+] Directory: ultima_install/ exists... changing current directory."
+		echo -e "\n ${SUC} Directory: ultima_install/ exists... changing current directory."
 		cd ultima_install/	# Changes to the directory.
-		echo " [+] Current Directory: ${PWD}"
+		echo -e " ${SUC} Current Directory: ${PWD}"
 	fi
 }
 
@@ -83,22 +101,22 @@ function UOC_install
 {
 	execution_success="false"
 	if [[ ! -f ${UOC_CLIENT_EXE} ]]; then
-		echo -e "\n  [-] File ${UOC_CLIENT_EXE} not found. Downloading."
+		echo -e "\n  ${BAD} File ${UOC_CLIENT_EXE} not found. Downloading."
 		wget -O ${UOC_CLIENT_EXE} ${UOC_CLIENT_URL} > /dev/null 2>&1
 		sleep 1
 		if [[ -f ${UOC_CLIENT_EXE} ]]; then
-			echo " [+] ${UOC_CLIENT_EXE} download complete. "
+			echo -e " ${SUC} ${UOC_CLIENT_EXE} download complete. "
 			execution_success="true"
 		fi
 	else
 		if [[ ! -d "${HOME}/.wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/" ]]; then
-			echo -e "\n [++] Launching installation of: ${UOC_CLIENT_EXE}."
+			echo -e "\n ${INS} Launching installation of: ${UOC_CLIENT_EXE}."
 			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine ${UOC_CLIENT_EXE} > /dev/null 2>&1
-			echo " [+] Installation complete."
+			echo -e " ${SUC} Installation complete."
 		fi
 
 		if [[ ! -f "${HOME}/.wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/soundLegacyMUL.uop" ]]; then
-			echo -e "\n  [++] Patching the ${UOC_CLIENT_EXE} client."
+			echo -e "\n ${INS} Patching the ${UOC_CLIENT_EXE} client."
 			cd "${HOME}/.wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/"
 			echo "  Current Directory: ${PWD}"
 			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UO.exe > /dev/null 2>&1
@@ -124,25 +142,25 @@ function UOS_install
 	execution_success="false"
 	if [[ ! -f ${UOS_CLIENT_RAR} || ! -f ${UOS_CLIENT_EXE} ]]; then
 		if [[ ! -f ${UOS_CLIENT_RAR} ]]; then
-			echo -e "\n  [-] File: ${UOS_CLIENT_RAR} not found... Downloading."
+			echo -e "\n  ${BAD} File: ${UOS_CLIENT_RAR} not found... Downloading."
 			wget -O ${UOS_CLIENT_RAR} ${UOS_CLIENT_URL} > /dev/null 2>&1
-			echo " [+] Download complete of: ${UOS_CLIENT_RAR}"
+			echo -e " ${SUC} Download complete of: ${UOS_CLIENT_RAR}"
 			sleep 1
 		fi
 
 		if [[ -f ${UOS_CLIENT_RAR} && ! -f ${UOS_CLIENT_EXE} ]]; then 
-			echo "  [-] Unpacking ${UOS_CLIENT_RAR}."
+			echo -e " ${BAD} Unpacking ${UOS_CLIENT_RAR}."
 			rar x ${UOS_CLIENT_RAR} > /dev/null 2>&1
 			sleep 1
 			if [[ -f ${UOS_CLIENT_EXE} ]]; then
-				echo " [+] Unpackaging of ${UOS_CLIENT_RAR} => ${UOS_CLIENT_EXE} complete."
+				echo -e " ${SUC} Unpackaging of ${UOS_CLIENT_RAR} => ${UOS_CLIENT_EXE} complete."
 				execution_success="true"
 			fi
 		fi
 	else
 		# # # #  INSTALL
 		if [[ ! -d "${HOME}/.wine32/drive_c/Program Files/UOS" ]]; then
-			echo -e "\n [++] Installing ${UOS_CLIENT_EXE}."
+			echo -e "\n ${INS} Installing ${UOS_CLIENT_EXE}."
 			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine ${UOS_CLIENT_EXE} > /dev/null 2>&1
 		fi
 	fi
@@ -161,6 +179,7 @@ function WINE_fix
 	echo -e "\tAllow the window manager to control the windows."
 	WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 winecfg > /dev/null 2>&1
 }
+
 
 function LINK_create
 {
@@ -189,17 +208,19 @@ function LINK_create
 	exit
 }
 
+
 function check_alias
 {
 	shell=`echo ${SHELL} | awk -F"/" '{print $4}'`
 	if_enabled=`cat ${HOME}/.${shell}rc | grep "alias wine"`
 	if [[ ${if_enabled} != "" ]]; then
-		echo "  [-] Alias exists already.."
+		echo -e "\n ${BAD} Alias exists already.."
 	else
 		echo "alias wine='WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine'" >> ${HOME}/.${shell}rc
-		echo -e "\n\n  [+] Alias added. \n"
+		echo -e "\n\n ${SUC} Alias added. \n"
 	fi
 }
+
 
 function check_shortcut
 {
@@ -212,7 +233,7 @@ function check_shortcut
 		chmod +x ${UO_PATH}
 		echo "EXECUTE AND LAUNCH UO BY: \"./ultima.sh\" in your home directory."
 	else
-		echo "${UO_PATH} already exists!"
+		echo -e " ${BAD} ${UO_PATH} already exists!"
 	fi
 
 }
