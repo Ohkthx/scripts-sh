@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# 						    # # # # # # # # # # # # # # # # # # 
-# Created by: Schism aka \x1p+2 aka Schy aka Royce  ## # # # # # # # # # # # # # # # # 
-#   IRC Nick: \x1p2 || Schy                         # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# 						        # # # # # # # # # # # # # # # # # # 
+# Created by: Ryan Ball || Schism aka \x1p+2 aka Royce  ## # # # # # # # # # # # # # # # # 
+#   IRC Nick: \x1p2 || Schy                             # # # # # # # # # # # # # # # # # #
 # Date Created: 8 September, 2015
 # Name: dotfiles.sh
 # Purpose:

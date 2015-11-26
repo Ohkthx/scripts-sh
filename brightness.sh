@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# Created by: Schism
+# Created by: Ryan Ball || 0x1p2 || Schism
 # Date created: 3 September, 2015
 # Filename: brightness.sh
 # Syntax: ./brightness.sh <number to set display>

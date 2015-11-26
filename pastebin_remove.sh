@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Created by: Royce || \x1p+2^]
+# Created by: Ryan Ball || \x1p+2^]
 # Syntax: pastebin_remove.sh
 
 # # P R E P   W O R K # # 
