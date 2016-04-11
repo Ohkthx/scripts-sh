@@ -2,7 +2,7 @@
 #syntax: alive.sh <#_of_pings>
 DEADCOUNT=0
 LIVECOUNT=0
-HOST="192.168.1.250"
+HOST="google.com"
 x=0
 count="${1}"
 if [[ ${1} == "" ]]; then count=0; fi
