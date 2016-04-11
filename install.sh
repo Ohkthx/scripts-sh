@@ -11,6 +11,11 @@
 # # #  set new_user_home_path ?
 # # #  add variables to configs to indicate if already performed.
 
+if [[ ${EUID} -ne 0 ]]; then
+  echo "You are not running as root... please retry as root."
+  exit 1
+fi
+
 
 C_OFF='\e[0m'			# Text Reset
 C_1='\e[0;32m'			# Green
