@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Created by: Ryan Ball (0x1p2|| schism)
+# Date Created: 18 Septermber 2015
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # #       N O T E S
 # # 

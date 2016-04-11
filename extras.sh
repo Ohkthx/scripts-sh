@@ -1,6 +1,9 @@
 #!/bin/bash
 # Misc functions
 
+# Created by: Ryan Ball (0x1p2 || schism)
+# Date Created: 18 September 2015
+
 pause() 
 {
  echo ""
