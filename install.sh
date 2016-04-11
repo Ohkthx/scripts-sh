@@ -15,13 +15,13 @@ C_2='\e[0;31m'			# Red
 ERR="${C_2}==>${C_OFF}  "	# Error message prefix.
 INFO="${C_1}==>${C_OFF}  "	# Non-Error message prefix.
 
-remote_pull="108.175.157.210"
-host_nm="spectre"
-new_user="schism"
-dir_boot="/dev/sda1"
-dir_root="/dev/sda2"
-dir_home="/dev/sda4"
-dir_efi="/boot"
+remote_pull="https://raw.githubusercontent.com/0x1p2/scripts-sh/master"
+host_nm="0x1p2-laptop"		# Hostname of the new installation
+new_user="schism"		# Username for the new installation
+dir_boot="/dev/sda1"		# /boot
+dir_root="/dev/sda2"		# /
+dir_home="/dev/sda4"		# /home
+dir_efi="/boot"			# EFI partition
 dotfile_name="dotfiles"
 dotfile_name_full="${dotfile_name}.tgz"
 
