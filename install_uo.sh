@@ -27,6 +27,7 @@ UOS_CLIENT_EXE="UOS_Latest.exe"		# Name of the UO Steam application (what is ext
 UOC_CLIENT_URL="http://web.cdn.eamythic.com/us/uo/installers/20120309/UOClassicSetup_7_0_24_0.exe"	# URL to download from
 UOS_CLIENT_URL="http://uos-update.github.io/UOS_Latest.exe"						# URL to download from
 INSTALL_DIR="${PWD}/ultima_install"
+W_PREFIX="${HOME}/.uo"
 
 INS="[\x1B[1;36m**\x1B[0m]"	# Fancy prefix for a string display of a install: [**]
 SUC="[\x1B[36m+\x1B[0m]"	# Fancy prefix for a string display of successful return: [+]
@@ -106,17 +107,17 @@ function UOC_install
 			execution_success="true"					# Set flag for it to install (download success)
 		fi
 	else
-		if [[ ! -d "${HOME}/.wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/" ]]; then
+		if [[ ! -d "${W_PREFIX}/drive_c/Program Files/Electronic Arts/Ultima Online Classic/" ]]; then
 			echo -e "\n ${INS} Launching installation of: ${UOC_CLIENT_EXE}."
-			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine ${UOC_CLIENT_EXE} > /dev/null 2>&1	# Launch the UO Install.
+			WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine ${UOC_CLIENT_EXE} > /dev/null 2>&1	# Launch the UO Install.
 			echo -e " ${SUC} Installation complete."
 		fi
 
-		if [[ ! -f "${HOME}/.wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/soundLegacyMUL.uop" ]]; then
+		if [[ ! -f "${W_PREFIX}/drive_c/Program Files/Electronic Arts/Ultima Online Classic/soundLegacyMUL.uop" ]]; then
 			echo -e "\n ${INS} Patching the ${UOC_CLIENT_EXE} client."
-			cd "${HOME}/.wine32/drive_c/Program Files/Electronic Arts/Ultima Online Classic/"
+			cd "${W_PREFIX}/drive_c/Program Files/Electronic Arts/Ultima Online Classic/"
 			echo "  Current Directory: ${PWD}"
-			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UO.exe > /dev/null 2>&1	# Launch the Patcher
+			WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UO.exe > /dev/null 2>&1	# Launch the Patcher
 			echo -e "\n\n The patcher may take several seconds to launch. After the patch update is"
 			echo -e "complete. Please restart the script to continue the install. It will no duplicate"
 			echo -e "any of the previous installation. Thank you- (Approximately 30seconds)"
@@ -146,9 +147,9 @@ function UOS_install
 			execution_success="true"	# Flag for installation.
 		fi
 	else
-		if [[ ! -d "${HOME}/.wine32/drive_c/Program Files/UOS" ]]; then
+		if [[ ! -d "${W_PREFIX}/drive_c/Program Files/UOS" ]]; then
 			echo -e "\n ${INS} Installing ${UOS_CLIENT_EXE}."
-			WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine ${UOS_CLIENT_EXE} > /dev/null 2>&1	# Launches UOS installation process.
+			WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine ${UOS_CLIENT_EXE} > /dev/null 2>&1	# Launches UOS installation process.
 		fi
 	fi
 }
@@ -163,14 +164,14 @@ function WINE_fix
 	echo -e "\n Options to DESELECT on the \"Graphics\" tab: "
 	echo -e "\tAllow the window manager to decorate the windows."
 #	echo -e "\tAllow the window manager to control the windows."
-	WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 winecfg > /dev/null 2>&1	# Launches the winecfg to disable window management.
+	WINEPREFIX=${W_PREFIX} WINEARCH=win32 winecfg > /dev/null 2>&1	# Launches the winecfg to disable window management.
 }
 
 
 function LINK_create
 {
 	echo -e "\n Do you wish to add the wine alias into your shell file?"
-	echo "*(This will make typing \"wine\" a shortcut for: WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine"
+	echo "*(This will make typing \"wine\" a shortcut for: WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine"
 	echo -n "  Option [y/N]: "
 	read input
 	if [[ ${input} == [yY] || ${input} == [yY][Ee][Ss] ]]; then
@@ -187,7 +188,7 @@ function LINK_create
 	fi
 
 	echo -e "\n\n Installation complete! If you want a chance to renable some of these options above, "
-	echo "  Just restart this script. It shouldn't prompt for any installation unless files are mising."
+	echo "  Just restart this script. It shouldn't prompt for any installation unless files are missing."
 	echo "  Thanks,"
 	echo "     Ryan || 0x1p2 || Schism"
 	exit
@@ -201,7 +202,7 @@ function check_alias
 	if [[ ${if_enabled} != "" ]]; then
 		echo -e "\n ${BAD} Alias exists already.."		# Already exists. MEH.
 	else
-		echo "alias wine='WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine'" >> ${HOME}/.${shell}rc	# Appends alias to config file
+		echo "alias wine='WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine'" >> ${HOME}/.${shell}rc	# Appends alias to config file
 		echo -e "\n\n ${SUC} Alias added. \n"
 	fi
 }
@@ -212,8 +213,8 @@ function check_shortcut
 	UO_PATH="${HOME}/ultima.sh"								# FILE: ./ultima.sh
 	if [[ ! -f ${UO_PATH} ]]; then	
 		echo "#!/bin/bash" > ${UO_PATH}							# #!/bin/bash
-		echo "cd \"${HOME}/.wine32/drive_c/Program Files/UOS\"" >> ${UO_PATH} 		# cd "${HOME}/.wine32/drive_c/Program Files/UOS"
-		echo "WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UOS.exe > /dev/null 2>&1" >> ${UO_PATH}	# WINEPREFIX=${HOME}/.wine32 WINEARCH=win32 wine UOS.exe
+		echo "cd \"${W_PREFIX}/drive_c/Program Files/UOS\"" >> ${UO_PATH} 		# cd "${W_PREFIX}/drive_c/Program Files/UOS"
+		echo "WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UOS.exe > /dev/null 2>&1" >> ${UO_PATH}	# WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UOS.exe
 		echo -e "\n${UO_PATH} has been created!"
 		chmod +x ${UO_PATH}								# Marks the new file executable.
 		echo "EXECUTE AND LAUNCH UO BY: \"./ultima.sh\" in your home directory."
