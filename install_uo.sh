@@ -55,6 +55,8 @@ function main
 
 	WINE_fix					# Launches the winecfg menu to fix the window management of the Ultima Client.
 
+	pause
+
 	LINK_create					# Final options for creating aliases and shortcuts to launching UOS and UO.
 }
 
@@ -119,7 +121,7 @@ function UOC_install
 			echo "  Current Directory: ${PWD}"
 			WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UO.exe > /dev/null 2>&1	# Launch the Patcher
 			echo -e "\n\n The patcher may take several seconds to launch. After the patch update is"
-			echo -e "complete. Please restart the script to continue the install. It will no duplicate"
+			echo -e "complete. Please restart the script to continue the install. It will not duplicate"
 			echo -e "any of the previous installation. Thank you- (Approximately 30seconds)"
 			for ((i = 30; i > -1; i--))
 			do
@@ -187,7 +189,7 @@ function LINK_create
 		check_shortcut	# If accepted... Check existance, if not- create the short for launching UO.
 	fi
 
-	echo -e "\n\n Installation complete! If you want a chance to renable some of these options above, "
+	echo -e "\n\n Installation complete! If you want a chance to reenable some of these options above, "
 	echo "  Just restart this script. It shouldn't prompt for any installation unless files are missing."
 	echo "  Thanks,"
 	echo "     Ryan || 0x1p2 || Schism"
@@ -214,14 +216,21 @@ function check_shortcut
 	if [[ ! -f ${UO_PATH} ]]; then	
 		echo "#!/bin/bash" > ${UO_PATH}							# #!/bin/bash
 		echo "cd \"${W_PREFIX}/drive_c/Program Files/UOS\"" >> ${UO_PATH} 		# cd "${W_PREFIX}/drive_c/Program Files/UOS"
-		echo "WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UOS.exe > /dev/null 2>&1" >> ${UO_PATH}	# WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UOS.exe
-		echo -e "\n${UO_PATH} has been created!"
+		echo "WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UOS.exe" >> ${UO_PATH}		# WINEPREFIX=${W_PREFIX} WINEARCH=win32 wine UOS.exe > /dev/null 2>&1
+		echo -e "\n${UO_PATH} has been created!"					#     resulted in poor performance by wine -------------^
 		chmod +x ${UO_PATH}								# Marks the new file executable.
 		echo "EXECUTE AND LAUNCH UO BY: \"./ultima.sh\" in your home directory."
 	else
 		echo -e " ${BAD} ${UO_PATH} already exists!"
 	fi
 
+}
+
+function pause
+{
+	echo ""
+	read -n 1 -p "Press any key to continue..." temp
+	echo ""
 }
 
 main	# Execute main
