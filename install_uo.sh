@@ -28,6 +28,8 @@ UOC_CLIENT_URL="http://web.cdn.eamythic.com/us/uo/installers/20120309/UOClassicS
 UOS_CLIENT_URL="http://uos-update.github.io/UOS_Latest.exe"						# URL to download from
 INSTALL_DIR="${PWD}/ultima_install"
 W_PREFIX="${HOME}/.uo"
+export WINEPREFIX=${W_PREFIX}
+export WINEARCH=win32
 
 INS="[\x1B[1;36m**\x1B[0m]"	# Fancy prefix for a string display of a install: [**]
 SUC="[\x1B[36m+\x1B[0m]"	# Fancy prefix for a string display of successful return: [+]
@@ -66,12 +68,12 @@ function check_progs
 	req_progs="wine wget"	# Programs that will be iterated through to verify they exist on the system.
 
 	for program in ${req_progs}; do
-		if [[ ! -f /usr/bin/${program} || ! -f /bin/${program} ]]; then	# Checks to verify you have the ability to download the executables (wget)
+		if [[ -f /usr/bin/${program} || -f /bin/${program} ]]; then	# Checks to verify you have the ability to download the executables (wget)
+			echo -e " ${SUC} ${program} found."
+		else
 			echo " You need to the ${program} package to install this..."
 			echo "  Exiting..."
 			exit		# This executable is required... can not proceeded with downloading without it
-		else
-			echo -e " ${SUC} ${program} found."
 		fi
 	done
 }

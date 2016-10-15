@@ -75,7 +75,7 @@ apps_basic()
 {
  a_b="${C_1} set ${C_OFF}"
  pacman -S vim dosfstools tmux git scrot --noconfirm
- pacman -S iw wpa_supplicant dialog openssh networkmanager networkmanager-qt ntp nmap vulscan --noconfirm
+ pacman -S iw wpa_supplicant dialog openssh networkmanager ntp nmap vulscan --noconfirm
  pacman -S lm_sensors acpi fuse intel-ucode --noconfirm
  pacman -S terminus-font ttf-droid ttf-liberation ttf-dejavu ttf-linux-libertine
  echo -e "\n ${ERR}Disabling root login via ssh."
@@ -103,7 +103,7 @@ apps_audio()
 apps_xorg()
 {
  a_x="${C_1} set ${C_OFF}"
- pacman -S synaptics xorg-xclock xterm xorg-server-utils xorg-apps xorg-xinit --noconfirm
+ pacman -S synaptics xorg xorg-xclock xterm xorg-server-utils xorg-apps xorg-xinit --noconfirm
 }
 
 
